@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Criar Novo Usuário')
+@section('title', 'Editar Usuário')
 
 @section('content')
 
@@ -27,3 +27,5 @@
     </form> 
 
 @endsection
+
+<!-- mo carinha de q eu fiz merda kkkkkkkkkkkkk oq rolou? nada dmais n -->
