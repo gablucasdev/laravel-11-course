@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+/* to so me preparando pra sair se quise fechar ai */
+
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
