@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <h1>Usuários</h1>
+    <h1>Users</h1>
     
     <a href="{{ route('users.create') }}">New</a> 
 
@@ -19,11 +19,12 @@
         </thead> 
         <tbody>
             @forelse ($users as $user)
-                <tr>
+                <tr> 
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
                         <a href="{{ route('users.edit', $user->id) }}">Edit</a>
+                        <a href="{{ route('users.show', $user->id) }}">Detalhes</a>
                     </td>
                 </tr>
             @empty
