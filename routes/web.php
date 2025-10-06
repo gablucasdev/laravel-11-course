@@ -5,8 +5,6 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfIsAdmin;
 
-/*  */
-
 Route::middleware('auth')
     ->prefix('admin')
     ->group(function () {
