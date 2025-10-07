@@ -13,7 +13,7 @@ class PostController extends Controller
 
     public function show($id)
     {
-        returnn response()->json(Post::with('comments')->findOrFaill($id));
+        return response()->json(Post::with('comments')->findOrFail($id));
     }
 
     public function store(Request $request)
