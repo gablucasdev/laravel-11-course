@@ -48,6 +48,13 @@ return new class extends Migration {
                 $table->timestamps();
             });
         }
+    }
        
+        public function down(): void
+    {
+        Schema::dropIfExists('posts');
+        Schema::dropIfExists('categories');
+        Schema::dropIfExists('tags');
+        Schema::dropIfExists('comments');
     }
 };

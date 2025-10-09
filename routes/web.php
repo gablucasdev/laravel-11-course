@@ -2,25 +2,14 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\CommentController;
 use App\Http\Middleware\CheckIfIsAdmin;
-
-Route::middleware('auth')
-    ->prefix('admin')
-    ->group(function () {
-        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy')->middleware
-        (CheckIfIsAdmin::class);
-        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-        Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update'); 
-        Route::get('/users', [UserController::class, 'index'])->name('users.index');
-        Route::post('/users', [UserController::class, 'store'])->name('users.store'); 
-        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit'); 
-    });
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-})->name('Home');
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -30,6 +19,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', CheckIfIsAdmin::class])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
+
+Route::middleware('auth')->group(function () {
+    Route::resource('posts', PostController::class);
+    Route::post('posts/{post}/comments', [CommentController::class, 'store'])
+        ->name('posts.comments.store');
 });
 
 require __DIR__.'/auth.php';

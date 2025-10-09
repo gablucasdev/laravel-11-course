@@ -1,35 +1,45 @@
 <?php
-namespace APP\\Http\\Controllers;
 
-use APP\Models\Post;
+namespace App\Http\Controllers;
+
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
     public function index()
     {
-        return response()->json(Post::with('user')->paginate(10));
+        $posts = Post::with('user')->paginate(10);
+        return view('posts.index', compact('posts'));
     }
 
-    public function show($id)
+    public function create()
     {
-        return response()->json(Post::with('comments')->findOrFail($id));
+        return view('posts.create');
     }
 
     public function store(Request $request)
     {
-        $this->autorize('create', Post::class);
+        $this->authorize('create', Post::class);
 
         $data = $request->validate([
-            'title' => 'required | string | max:255',
-            'content' => 'nullable | string | max:255',
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string|max:255',
             'status' => 'in:draft,published',
             'visibility' => 'in:public,private',
         ]);
 
         $data['user_id'] = $request->user()->id;
-        $post - Post::create($data):
-        return request()->json($post, 201);
+        $post = Post::create($data);
+
+        return redirect()->route('posts.show', $post->id)
+                         ->with('success', 'Postagem criada com sucesso.');
+    }
+
+    public function show($id)
+    {
+        $post = Post::with(['comments.user', 'user'])->findOrFail($id);
+        return view('posts.show', compact('post'));
     }
 
     public function update(Request $request, $id)
@@ -38,21 +48,25 @@ class PostController extends Controller
         $this->authorize('update', $post);
 
         $data = $request->validate([
-            'title' => 'required | string | max:255',
-            'content' => 'nullable | string | max:255',
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string|max:255',
             'status' => 'in:draft,published',
             'visibility' => 'in:public,private',
         ]);
 
         $post->update($data);
-        return response()->json($post);
+
+        return redirect()->route('posts.show', $post->id)
+                         ->with('success', 'Postagem atualizada.');
     }
 
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
         $this->authorize('delete', $post);
+
         $post->delete();
-        return response()->json(null, 204);
+
+        return redirect()->route('posts.index')->with('success', 'Postagem removida.');
     }
 }

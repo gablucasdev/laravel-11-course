@@ -1,41 +1,52 @@
 <?php
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasPermissions;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
-class User Extends Authenticatable
+class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role_id',
     ];
 
-    public function role()
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    public function roles()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
-    public function posts()
+    public function permissions()
     {
-        return $this->hasMany(Post::class);
+        return $this->belongsToMany(Permission::class);
     }
 
-    public function comments()
+    public function hasPermission($permissionName)
     {
-        return $this->hasMany(Comments::class);
-    }
+        if ($this->permissions->contains('name', $permissionName)) {
+            return true;
+        }
 
-    public function hasPermissions(string $permissionName): bool
-    {
-        $role - $this->role;
-        if (! $role) return false;
+        foreach ($this->roles as $role) {
+            if ($role->permissions->contains('name', $permissionName)) {
+                return true;
+            }
+        }
 
-        return $role->permissions()->where('name', $permissionName)->exists();
+        return false;
     }
 }
