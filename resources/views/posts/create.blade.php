@@ -47,10 +47,10 @@
         </div>
 
         <div class="text-right">
-            <button type="submit"
-                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <a href="{{ route('posts.index') }}"
+               class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 Publicar
-            </button>
+            </a>
         </div>
     </form>
 </div>

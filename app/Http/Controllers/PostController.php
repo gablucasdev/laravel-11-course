@@ -23,8 +23,8 @@ class PostController extends Controller
         $this->authorize('create', Post::class);
 
         $data = $request->validate([
-            'title' => 'required|string|max:250',
-            'content' => 'nullable|string|max:250',
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string|max:255',
             'status' => 'in:draft,published',
             'visibility' => 'in:public,private',
         ]);
@@ -32,7 +32,7 @@ class PostController extends Controller
         $data['user_id'] = $request->user()->id;
         $post = Post::create($data);
 
-        return redirect()->route('posts.show', $post->id)
+        return redirect()->route('posts.index', $post->id)
                          ->with('success', 'Postagem criada com sucesso.');
     }
 
