@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Permission;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Hash;
 
 class RolePermissionSeeder extends Seeder
 {
@@ -20,8 +20,8 @@ class RolePermissionSeeder extends Seeder
 
         $admin = Role::firstOrCreate(['name' => 'admin'], ['description' => 'Admin']);
         $editor = Role::firstOrCreate(['name' => 'editor'], ['description' => 'Editor']);
-        $author = Role::firstOrCreate(['name' => 'author'], ['description' => 'Author']);
-
+        $author = Role::firstOrCreate(['name' => 'author'], 'description' => 'Author');
+        
         $allPerms = Permission::all();
         $admin->permission()->sync($allPerms->pluck('id')->toArray());
         $editor->permission()->sync($allPerms->WhereIn('name', ['create_post', 'edit_any_post', 'delete_any_post', 'publish_post'])->pluck('id')->toArray());
