@@ -37,7 +37,7 @@ Route::middleware(['auth', CheckIfIsAdmin::class])
 Route::middleware('auth')->group(function () {
     Route::resource('posts', PostController::class);
     Route::post('posts/{post}/comments', [CommentController::class, 'store'])
-        ->name('posts.comments.store');
+        ->name('posts.comments.store'); 
 });
 
 require __DIR__.'/auth.php';

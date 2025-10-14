@@ -7,6 +7,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class CommentController extends Controller
 
 {
@@ -19,7 +20,7 @@ class CommentController extends Controller
         $data['user_id'] = Auth::id();
         $data['post_id'] = $post->id;
 
-        Comment::create($data);
+        Comment::createComment($data);
 
         return redirect()->route('posts.show', $post)->with('success', 'Comentário adicionado');
     }

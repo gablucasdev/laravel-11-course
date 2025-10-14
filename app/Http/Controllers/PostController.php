@@ -18,13 +18,18 @@ class PostController extends Controller
         return view('posts.create');
     }
 
+    public function createComment()
+    {
+        return view('posts.show');
+    }
+
     public function store(Request $request)
     {
-        $this->authorize('create', Post::class);
+        /* $this->authorize('create', Post::class); */
 
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'nullable|string|max:255',
+            'content' => 'string|max:255',
             'status' => 'in:draft,published',
             'visibility' => 'in:public,private',
         ]);
@@ -45,7 +50,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
-        $this->authorize('update', $post);
+        /* $this->authorize('update', $post); */
 
         $data = $request->validate([
             'title' => 'required|string|max:255',
@@ -63,7 +68,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
-        $this->authorize('delete', $post);
+        /* $this->authorize('delete', $post); */
 
         $post->delete();
 
