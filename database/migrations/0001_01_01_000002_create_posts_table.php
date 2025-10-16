@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
-            $table->text('content')->nullable();
+            $table->text('content');
             $table->enum('status', ['draft', 'published'])->default('draft');
             $table->enum('visibility', ['public', 'private'])->default('public');
             $table->timestamps();
@@ -41,7 +41,7 @@ return new class extends Migration {
             $table->timestamps();
         });
     }
-    
+
         public function down(): void
     {
         Schema::dropIfExists('posts');

@@ -20,7 +20,7 @@ class PostController extends Controller
 
     public function createComment()
     {
-        return view('posts.show');
+        return view('posts.index');
     }
 
     public function store(Request $request)
@@ -54,7 +54,7 @@ class PostController extends Controller
 
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'content' => 'nullable|string|max:255',
+            'content' => 'string|max:255',
             'status' => 'in:draft,published',
             'visibility' => 'in:public,private',
         ]);

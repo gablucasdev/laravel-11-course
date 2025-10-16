@@ -14,13 +14,13 @@ class CommentController extends Controller
     public function store(Request $request, Post $post)
     {
         $data = $request->validate([
-            'body' => 'required|string|max:2000',
+            'content' => 'required|string|max:2000',
         ]);
 
         $data['user_id'] = Auth::id();
         $data['post_id'] = $post->id;
 
-        Comment::createComment($data);
+        Comment::create($data);
 
         return redirect()->route('posts.show', $post)->with('success', 'Comentário adicionado');
     }
