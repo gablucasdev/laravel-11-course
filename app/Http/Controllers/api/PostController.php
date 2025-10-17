@@ -3,64 +3,45 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $post = Post::with('user','comment')->latest()->get();
+        $post = Post::all();
+        return response()->json($post, 200);
+    }
 
+    public function store(StorePostRequest $request)
+    {
+        $validated = $request->validated();
+        $validated['user_id'] = 1;
+        $post = Post::create($validated);
         return response()->json($post);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function show(int $id)
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'string|max:255',
-            'status' => 'in:draft,published',
-            'visibility' => 'in:public,private',
-        ]);
-
-        $data['user_id'] = $request->user()->id;
-
-        $post = Post::create($data);
-
-        return response()->json([
-            'message' => 'Postagem criada com sucesso ',
-            'data' => $post
-        ], 201);
+        $post = Post::findOrFail($id);
+        return response()->json($post, 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function update(UpdatePostRequest $request, int $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->update($request->validated());
+        $post->save();
+        return response()->json($post, 200);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(int $id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return response()->json(true, 200);
     }
 }
