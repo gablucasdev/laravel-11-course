@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
@@ -43,7 +44,7 @@ class CommentController extends Controller
         return view('comments.edit', compact('comment'));
     }
 
-    public function update(Request $request, Comment $comment )
+    public function update(Request $request, Comment $comment)
     {
         if (Auth::id() !== $comment->user_id && !Auth::user()->is_admin) abort(403);
 
@@ -55,5 +56,4 @@ class CommentController extends Controller
         $comment->update($data);
         return redirect()->route('posts.show', $comment->post_id)->with('success', 'Post atualizado');
     }
-
 }
