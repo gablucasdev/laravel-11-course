@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -34,6 +35,7 @@ class PostController extends Controller
             'visibility' => 'in:public,private',
         ]);
 
+        $data['slug'] = Str::slug($data['title']);
         $data['user_id'] = $request->user()->id;
         $post = Post::create($data);
 

@@ -17,8 +17,6 @@ class CommentController extends Controller
             'content' => 'required|string|max:2000',
         ]);
 
-
-        
         $data['user_id'] = Auth::id();
         $data['post_id'] = $post->id;
 
