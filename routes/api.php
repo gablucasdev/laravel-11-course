@@ -10,7 +10,7 @@ Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::put('/posts/{id}', [PostController::class, 'update']);
 Route::delete('/posts/{id}', [PostController::class, 'destroy']);
 
-Route::get('/posts/comments', [PostController::class, 'store']);
-Route::get('/posts/{id}/comments', [PostController::class, 'show']);
-Route::put('/posts/{id}/comments', [PostController::class, 'update']);
-Route::delete('/posts/{id}/comments', [PostController::class, 'destroy']);
+Route::get('/posts/{id}/comments', [CommentController::class, 'index']);
+Route::post('/posts/{id}/comments', [CommentController::class, 'store']);
+Route::put('/comments/{id}', [CommentController::class, 'update']);
+Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
