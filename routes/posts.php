@@ -8,4 +8,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('posts', PostController::class);
     Route::post('posts/{post}/comments', [CommentController::class, 'store'])
         ->name('posts.comments.store');
+    Route::get('/posts/{id}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::put('/posts/{id}', [PostController::class, 'update'])->name('posts.update');
 });

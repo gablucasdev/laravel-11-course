@@ -40,7 +40,7 @@ class PostController extends Controller
         $post = Post::create($data);
 
         return redirect()->route('posts.index', $post->id)
-                         ->with('success', 'Postagem criada com sucesso.');
+            ->with('success', 'Postagem criada com sucesso.');
     }
 
     public function show($id)
@@ -48,6 +48,20 @@ class PostController extends Controller
         $post = Post::with(['comments.user', 'user'])->findOrFail($id);
         return view('posts.show', compact('post'));
     }
+
+        public function edit($id)
+    {
+        $post = Post::findOrFail($id);
+
+        $userId = 1;
+
+        if ($post->user_id !== $userId) {
+            abort(403, 'Você não tem permissão para editar este post.');
+        }
+
+        return view('posts.edit', compact('post'));
+    }
+
 
     public function update(Request $request, $id)
     {
@@ -64,7 +78,7 @@ class PostController extends Controller
         $post->update($data);
 
         return redirect()->route('posts.show', $post->id)
-                         ->with('success', 'Postagem atualizada.');
+            ->with('success', 'Postagem atualizada.');
     }
 
     public function destroy($id)
