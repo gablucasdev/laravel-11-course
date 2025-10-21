@@ -21,12 +21,14 @@ class PostController extends Controller
         $validated = $request->validated();
         $validated['user_id'] = 1;
         $post = Post::create($validated);
+
         return response()->json($post);
     }
 
     public function show(int $id)
     {
         $post = Post::findOrFail($id);
+
         return response()->json($post, 200);
     }
 
@@ -35,14 +37,15 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->update($request->validated());
         $post->save();
+
         return response()->json($post, 200);
     }
-
 
     public function destroy(int $id)
     {
         $post = Post::findOrFail($id);
         $post->delete();
+
         return response()->json(true, 200);
     }
 }
