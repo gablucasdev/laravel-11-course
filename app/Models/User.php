@@ -2,16 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
-use Spatie\Permission\Traits\HasPermissions;
-use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
+    use HasApiTokens;
+    use HasFactory;
     use Notifiable;
 
     protected $fillable = [
@@ -27,12 +28,12 @@ class User extends Authenticatable
 
     public function roles()
     {
-    return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class);
     }
 
     public function permissions()
     {
-    return $this->belongsToMany(Permission::class);
+        return $this->belongsToMany(Permission::class);
     }
 
     public function hasPermission($permissionName)
